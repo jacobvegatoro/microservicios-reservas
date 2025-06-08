@@ -5,7 +5,8 @@ const reservaRoutes = require('./routes/reservaRoutes');
 const app = express();
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/reservas', {
+//mongoose.connect('mongodb://localhost:27017/reservas', {
+mongoose.connect('mongodb://reservas-db:27017/reservas', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => console.log('Conectado a MongoDB Reservas'))

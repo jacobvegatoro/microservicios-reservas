@@ -1,9 +1,10 @@
 # 🏥 Sistema de Reservas de Horas Médicas (Microservicios con Node.js y MongoDB)
 
-Este proyecto demuestra una arquitectura simple de microservicios para gestionar reservas de horas médicas. Cada servicio está desacoplado y comunica con los demás mediante REST.
+Este proyecto demuestra una arquitectura simple de microservicios para gestionar reservas de horas médicas. Cada servicio está desacoplado y comunica con los demás mediante REST, centralizado mediante un API Gateway.
 
 ## 📦 Servicios
 
+- **api-gateway**: Punto de entrada único. Aplica autenticación JWT y enruta a los servicios.
 - **usuarios-service**: Registro y autenticación de usuarios (pacientes y médicos).
 - **agenda-service**: Gestión de disponibilidad horaria para médicos.
 - **reservas-service**: Reservas de horas médicas, validadas contra la disponibilidad.
@@ -24,6 +25,7 @@ Este proyecto demuestra una arquitectura simple de microservicios para gestionar
 Coloca los siguientes archivos y carpetas en el mismo directorio:
 
 ```
+/api-gateway
 /usuarios-service
 /agenda-service
 /reservas-service
@@ -45,9 +47,11 @@ docker-compose up --build
 
 ---
 
-## 🌐 Endpoints disponibles
+## 🌐 Endpoints disponibles (a través de API Gateway)
 
-### usuarios-service (`http://localhost:3001`)
+El API Gateway se expone en: `http://localhost:3000`
+
+### usuarios (`/usuarios`)
 - `POST /usuarios` — Crear usuario
 - `POST /usuarios/login` — Login de usuario
 - `GET /usuarios` — Obtener todos los usuarios
@@ -55,12 +59,12 @@ docker-compose up --build
 - `PUT /usuarios/:id` — Actualizar usuario
 - `DELETE /usuarios/:id` — Eliminar usuario
 
-### agenda-service (`http://localhost:3002`)
+### agenda (`/agenda`)
 - `POST /agenda` — Definir disponibilidad horaria
 - `GET /agenda/:medicoId` — Obtener disponibilidad de un médico
 - `GET /agenda/:medicoId/:fecha` — Obtener disponibilidad por fecha
 
-### reservas-service (`http://localhost:3003`)
+### reservas (`/reservas`)
 - `POST /reservas` — Crear una reserva
 - `GET /reservas` — Listar reservas
 - `DELETE /reservas/:id` — Cancelar reserva
@@ -69,7 +73,7 @@ docker-compose up --build
 
 ## 🧪 Datos de ejemplo
 
-### Crear médico (usuarios-service):
+### Crear médico:
 ```json
 {
   "nombre": "Dr. Juan Pérez",
@@ -79,7 +83,7 @@ docker-compose up --build
 }
 ```
 
-### Definir disponibilidad (agenda-service):
+### Definir disponibilidad:
 ```json
 {
   "medicoId": "ID_DEL_MEDICO",
@@ -88,7 +92,7 @@ docker-compose up --build
 }
 ```
 
-### Crear reserva (reservas-service):
+### Crear reserva:
 ```json
 {
   "pacienteId": "ID_DEL_PACIENTE",
@@ -96,6 +100,17 @@ docker-compose up --build
   "fecha": "2025-06-10",
   "hora": "10:00"
 }
+```
+
+---
+
+## 🔐 Autenticación
+
+- El API Gateway verifica el token JWT (salvo para `/usuarios` y `/usuarios/login`)
+- Para llamadas autenticadas, usar:
+
+```
+Authorization: Bearer <token>
 ```
 
 ---
@@ -110,4 +125,4 @@ docker-compose down
 
 ## ✅ Autor
 
-Este sistema fue generado como ejemplo educativo para ilustrar microservicios con Node.js y MongoDB.
+Este sistema fue generado automáticamente como ejemplo educativo para ilustrar microservicios con Node.js y MongoDB.

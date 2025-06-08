@@ -5,7 +5,8 @@ const agendaRoutes = require('./routes/agendaRoutes');
 const app = express();
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/agenda', {
+//mongoose.connect('mongodb://localhost:27017/agenda', {
+mongoose.connect('mongodb://agenda-db:27017/agenda', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => console.log('Conectado a MongoDB Agenda'))

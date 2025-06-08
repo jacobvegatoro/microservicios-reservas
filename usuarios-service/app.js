@@ -5,7 +5,8 @@ const userRoutes = require('./routes/userRoutes');
 const app = express();
 app.use(express.json());
 
-mongoose.connect('mongodb://localhost:27017/usuarios', {
+//mongoose.connect('mongodb://localhost:27017/usuarios', {
+mongoose.connect('mongodb://usuarios-db:27017/usuarios', {
     useNewUrlParser: true,
     useUnifiedTopology: true
 }).then(() => console.log('Conectado a MongoDB'))

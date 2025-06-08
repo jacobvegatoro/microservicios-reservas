@@ -1,6 +1,18 @@
 version: '3.8'
 
 services:
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "3000:3000"
+    depends_on:
+      - usuarios-service
+      - agenda-service
+      - reservas-service
+    networks:
+      - red-clinica
+
   usuarios-service:
     build: ./usuarios-service
     container_name: usuarios-service
