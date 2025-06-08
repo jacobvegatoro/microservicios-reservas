@@ -1,0 +1,65 @@
+version: '3.8'
+
+services:
+  usuarios-service:
+    build: ./usuarios-service
+    container_name: usuarios-service
+    ports:
+      - "3001:3001"
+    depends_on:
+      - usuarios-db
+    networks:
+      - red-clinica
+
+  agenda-service:
+    build: ./agenda-service
+    container_name: agenda-service
+    ports:
+      - "3002:3002"
+    depends_on:
+      - agenda-db
+    networks:
+      - red-clinica
+
+  reservas-service:
+    build: ./reservas-service
+    container_name: reservas-service
+    ports:
+      - "3003:3003"
+    depends_on:
+      - reservas-db
+      - agenda-service
+    networks:
+      - red-clinica
+
+  usuarios-db:
+    image: mongo:6
+    container_name: usuarios-db
+    volumes:
+      - usuarios-data:/data/db
+    networks:
+      - red-clinica
+
+  agenda-db:
+    image: mongo:6
+    container_name: agenda-db
+    volumes:
+      - agenda-data:/data/db
+    networks:
+      - red-clinica
+
+  reservas-db:
+    image: mongo:6
+    container_name: reservas-db
+    volumes:
+      - reservas-data:/data/db
+    networks:
+      - red-clinica
+
+networks:
+  red-clinica:
+
+volumes:
+  usuarios-data:
+  agenda-data:
+  reservas-data:
